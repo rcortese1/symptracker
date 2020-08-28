@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SympTracker</string>
+    <string name="hello_user_what_can_we_help_with_today">Hello, User! What can we help with today?</string>
+    <string name="record_symptoms">Record Symptoms</string>
+    <string name="emergency_contact_list">Emergency Contact List</string>
+    <string name="display_calendar">Display Calendar</string>
+    <string name="this_is_the_contact_screen">This is the contact screen</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="their_name">Their Name</string>
+    <string name="their_number">Their Number</string>
 </resources>
