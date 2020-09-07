@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button recSympBtn;
-    Button calendarBtn;
-    Button contactBtn;
-    TextView welcome_msg;
+
+
+    private Button recSympBtn;
+    private Button calendarBtn;
+    private Button contactBtn;
+    private TextView welcome_msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
