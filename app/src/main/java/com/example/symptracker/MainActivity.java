@@ -10,13 +10,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     private Button recSympBtn;
     private Button calendarBtn;
     private Button contactBtn;
     private TextView welcome_msg;
 
+    //TODO: add rest of activities
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
