@@ -8,4 +8,8 @@
     <string name="add_contact">Add Contact</string>
     <string name="their_name">Their Name</string>
     <string name="their_number">Their Number</string>
+    <string name="symp_recorder"><u>Symptom Editor</u></string>
+    <string name="message_recorder"><u>Message Recorder</u></string>
+    <string name="moodDesc">Type a description of how you\'re feeling here...</string>
+    <string name="save_symptom">Save Changes</string>
 </resources>

@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         recSympBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //THESE WILL BE UNCOMMENTED WHEN THEIR SCREENS ARE MADE
-                /*Intent intent = new Intent(getApplicationContext(), SympRecorder.class);
-                startActivity(intent);*/
+
+                Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
+                startActivity(intent);
             }
         });
 
