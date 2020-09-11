@@ -19,6 +19,7 @@ public class SympContact extends AppCompatActivity {
     private String contact_number = null;
     private String contact_name = null;
     private String contact_email = null;
+    private DBHandler db;
 
     Button addContactBtn;
     TextView contactName;
@@ -36,6 +37,8 @@ public class SympContact extends AppCompatActivity {
         /* These two should be updated when emergency contact is selected to match the contact's info */
         contactName = findViewById(R.id.contactName);
         contactNumber = findViewById(R.id.contactNumber);
+
+        db = new DBHandler(this);
 
         addContactBtn.setOnClickListener(new View.OnClickListener() {
             @Override

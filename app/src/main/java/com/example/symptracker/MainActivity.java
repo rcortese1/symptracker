@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button recSympBtn;
-    private Button calendarBtn;
-    private Button contactBtn;
-    private TextView welcome_msg;
+    Button recSympBtn;
+    Button calendarBtn;
+    Button contactBtn;
+    TextView welcome_msg;
+
+
 
     //TODO: add rest of activities
     @Override
@@ -27,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
         //The name part of the message should be updated once user's name recorded and stored in database
         welcome_msg = findViewById(R.id.welcome_msg);
 
+
+
         recSympBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
+                //Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
+                Intent intent = new Intent(getApplicationContext(), DatabaseTester.class);
                 startActivity(intent);
             }
         });
