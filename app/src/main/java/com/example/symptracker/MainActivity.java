@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SympContact.class);
                 startActivity(intent);
-                //ok, this works, it goes to the contact screen
             }
         });
     }

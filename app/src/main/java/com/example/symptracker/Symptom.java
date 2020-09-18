@@ -17,6 +17,7 @@ public class Symptom
     {
         this.name = name.toLowerCase();
         this.isSevere = isSevere;
+        //note set to . for testing purposes
         note = ".";
     }
 
@@ -34,6 +35,8 @@ public class Symptom
         this.note = note;
     }
 
+    //get methods
+
     public String getName()
     {
         return this.name;
@@ -48,6 +51,8 @@ public class Symptom
     {
         return note;
     }
+
+    //set methods
 
     public void setSeverity(boolean b)
     {

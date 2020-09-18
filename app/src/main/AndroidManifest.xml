@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DatabaseTester" />
-        <activity android:name=".RecordSymptom"></activity>
+        <activity android:name=".RecordSymptom" />
         <activity android:name=".SympContact" />
         <activity android:name=".MainActivity">
             <intent-filter>
