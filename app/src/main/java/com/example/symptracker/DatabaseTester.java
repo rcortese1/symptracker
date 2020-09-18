@@ -2,7 +2,6 @@ package com.example.symptracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,7 +56,7 @@ public class DatabaseTester extends AppCompatActivity {
 
         //Variables
 
-        List<Symptom> symptomList = db.getAllStudents();
+        List<Symptom> symptomList = db.getAllSymptoms();
 
         for(Symptom s : symptomList)
         {
@@ -94,7 +93,7 @@ public class DatabaseTester extends AppCompatActivity {
                     String severe = "";
                     severe = s.isSevere() ? "Severe" : "Not severe";
                     showSympSeverity.setText(severe);
-                    //showSympNote.setText(s.getNote());
+                    showSympNote.setText(s.getNote());
                 }
             }
         });

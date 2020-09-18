@@ -98,16 +98,27 @@ public class RecordSymptom extends AppCompatActivity {
     private boolean isSevere(String name)
     {
         switch (name.toLowerCase()) {
+            case "fever":
+            case "chest pain":
+            case "severe pains":
+            case "pneumonia":
+                severity = true;
+                break;
             case "headache":
+            case "coughing":
+            case "vomiting":
+            case "dizziness":
+            case "congestion":
+            case "other":
+            default:
                 severity = false;
                 break;
-            case "coughing":
-                severity = false;
+                /*severity = false;
                 break;
             case "fever":
                 severity = true;
                 break;
-            case "vomiting":
+
                 severity = false;
                 break;
             case "chest pain":
@@ -116,21 +127,18 @@ public class RecordSymptom extends AppCompatActivity {
             case "severe pains":
                 severity = true;
                 break;
-            case "dizziness":
+
                 severity = false;
                 break;
-            case "congestion":
+
                 severity = false;
                 break;
             case "pneumonia":
                 severity = true;
                 break;
-            case "other":
+
                 severity = false;
-                break;
-            default:
-                severity = false;
-                break;
+                break;*/
         }
         return severity;
     }

@@ -15,8 +15,6 @@ public class MainActivity extends AppCompatActivity {
     Button contactBtn;
     TextView welcome_msg;
 
-
-
     //TODO: add rest of activities
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         recSympBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
-                Intent intent = new Intent(getApplicationContext(), DatabaseTester.class);
+                Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
+                //Intent intent = new Intent(getApplicationContext(), DatabaseTester.class);
                 startActivity(intent);
             }
         });

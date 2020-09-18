@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class DBHandler extends SQLiteOpenHelper
 
     private static final String KEY_NAME = "name";
     private static final String KEY_IS_SEVERE = "isSevere";
-    //private static final String KEY_NOTE = "note";
+    private static final String KEY_NOTE = "note";
 
     public DBHandler(Context context)
     {
@@ -33,7 +34,7 @@ public class DBHandler extends SQLiteOpenHelper
     {
         String CREATE_SYMPTOM_TABLE = "CREATE TABLE " + TABLE_SYMPTOMS + "("
                 + KEY_NAME + " TEXT," + KEY_IS_SEVERE
-                + " NOT NULL CHECK (" + KEY_IS_SEVERE + " IN (0, 1)" + ")" + ")";
+                + " NOT NULL CHECK (" + KEY_IS_SEVERE + " IN (0, 1)" + ")," + KEY_NOTE + " TEXT " + ")";
         db.execSQL(CREATE_SYMPTOM_TABLE);
     }
 
@@ -56,7 +57,7 @@ public class DBHandler extends SQLiteOpenHelper
         int severity = symptom.isSevere() ? 1 : 0;
         values.put(KEY_IS_SEVERE, severity);
 
-        //values.put(KEY_NOTE, symptom.getNote());
+        values.put(KEY_NOTE, symptom.getNote());
 
         db.insert(TABLE_SYMPTOMS, null, values);
         db.close();
@@ -66,27 +67,28 @@ public class DBHandler extends SQLiteOpenHelper
     {
         name = name.toLowerCase();
         SQLiteDatabase db = getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_SYMPTOMS, new String[] {KEY_NAME, KEY_IS_SEVERE}, KEY_NAME + "=?",
+//
+        Cursor cursor = db.query(TABLE_SYMPTOMS, new String[] {KEY_NAME, KEY_IS_SEVERE, KEY_NOTE}, KEY_NAME + "=?",
                         new String[] {String.valueOf(name)}, null, null, null, null);
 
-        if(cursor != null)
+        if(cursor != null && cursor.getCount() > 0)
         {
             cursor.moveToFirst();
-            boolean severity = Integer.parseInt(cursor.getString(1)) == 1;
 
-            Symptom symptom = new Symptom(cursor.getString(0), severity);
+            boolean severity = Integer.parseInt(cursor.getString(1)) == 1;
+            Symptom symptom = new Symptom(cursor.getString(0), severity, cursor.getString(2));
             cursor.close();
             return symptom;
         }
         else
         {
+            Log.d("CursorNull", "lol cursor is null noob");
             return null;
         }
 
     }
 
-    public List<Symptom> getAllStudents()
+    public List<Symptom> getAllSymptoms()
     {
         List<Symptom> symptomList = new ArrayList<Symptom>();
 
@@ -99,9 +101,11 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do {
                 Symptom symptom = new Symptom();
-                symptom.setName(cursor.getString(0));
                 boolean severity = Integer.parseInt(cursor.getString(1)) == 1;
+
+                symptom.setName(cursor.getString(0));
                 symptom.setSeverity(severity);
+                symptom.setNote(cursor.getString(2));
 
                 symptomList.add(symptom);
             }
@@ -119,6 +123,7 @@ public class DBHandler extends SQLiteOpenHelper
         int severity = symptom.isSevere() ? 1 : 0;
         values.put(KEY_NAME, symptom.getName());
         values.put(KEY_IS_SEVERE, severity);
+        values.put(KEY_NOTE, symptom.getNote());
 
         return db.update(TABLE_SYMPTOMS, values, KEY_NAME + "= ?",
                 new String[] {String.valueOf(symptom.getName())});
