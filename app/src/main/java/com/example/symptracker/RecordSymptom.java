@@ -86,8 +86,10 @@ public class RecordSymptom extends AppCompatActivity {
                 symptom = sympSelect.getSelectedItem().toString();
                 severity = isSevere(symptom);
                 //oh shit, do we need to create a separate database for actually RECORDING the user's symptoms?
-                db.addSymptom(new Symptom(symptom, severity, note));
-                Log.d("Insert: ", "Added new user symptom to database");
+                Symptom s = new Symptom(symptom, severity, note);
+                db.addSymptom(s);
+                //for testing purposes
+                Log.d("Insert: ", "Added new user symptom to database: " + s.toString());
                 //resets the text in the box
                 symptomTextEntry.getText().clear();
                 //don't think we need to reset the dropdown box again
