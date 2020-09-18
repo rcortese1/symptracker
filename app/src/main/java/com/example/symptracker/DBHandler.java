@@ -17,6 +17,7 @@ public class DBHandler extends SQLiteOpenHelper
 
     private static final String KEY_NAME = "name";
     private static final String KEY_IS_SEVERE = "isSevere";
+    //private static final String KEY_NOTE = "note";
 
     public DBHandler(Context context)
     {
@@ -54,6 +55,8 @@ public class DBHandler extends SQLiteOpenHelper
         //1 means severe and 0 means not severe
         int severity = symptom.isSevere() ? 1 : 0;
         values.put(KEY_IS_SEVERE, severity);
+
+        //values.put(KEY_NOTE, symptom.getNote());
 
         db.insert(TABLE_SYMPTOMS, null, values);
         db.close();
