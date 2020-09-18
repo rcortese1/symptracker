@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DatabaseTester" />
         <activity android:name=".RecordSymptom"></activity>
         <activity android:name=".SympContact" />
         <activity android:name=".MainActivity">

@@ -4,7 +4,7 @@ public class Symptom
 {
     private String name;
     private boolean isSevere;
-    private String note;
+    private String note = "";
 
     public Symptom()
     {
@@ -17,12 +17,13 @@ public class Symptom
     {
         this.name = name.toLowerCase();
         this.isSevere = isSevere;
-        note = null;
+        note = ".";
     }
 
     public Symptom(String name, String note)
     {
         this.name = name.toLowerCase();
+        isSevere = false;
         this.note = note;
     }
 
@@ -43,7 +44,10 @@ public class Symptom
         return this.isSevere;
     }
 
-    public String getNote() { return this.note; }
+    public String getNote()
+    {
+        return note;
+    }
 
     public void setSeverity(boolean b)
     {
@@ -55,6 +59,14 @@ public class Symptom
         this.name = name;
     }
 
-    public void setNote(String note) { this.note = note; }
+    public void setNote(String note)
+    {
+        this.note = note;
+    }
+
+    public String toString()
+    {
+        return "Name: " + getName() + "\nSevere?: " + isSevere() + "\nNote: " + getNote();
+    }
 
 }

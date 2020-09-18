@@ -27,6 +27,14 @@
             android:hint="Enter symptom severity"
             android:inputType="textPersonName" />
 
+        <EditText
+            android:id="@+id/symptomNoteEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter symptom note"
+            android:inputType="textPersonName" />
+
         <Button
             android:id="@+id/addSymptom"
             android:layout_width="match_parent"
@@ -41,6 +49,12 @@
 
         <TextView
             android:id="@+id/showSympSeverity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="this text will change if symptom found" />
+
+        <TextView
+            android:id="@+id/showSympNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="this text will change if symptom found" />
