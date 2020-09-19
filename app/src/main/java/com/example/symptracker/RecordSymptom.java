@@ -90,6 +90,7 @@ public class RecordSymptom extends AppCompatActivity {
                 Log.d("Insert: ", "Added new user symptom to database");
                 //resets the text in the box
                 symptomTextEntry.getText().clear();
+                //TODO: send sms if severity == yes
                 //don't think we need to reset the dropdown box again
             }
         });
