@@ -8,4 +8,23 @@
     <string name="add_contact">Add Contact</string>
     <string name="their_name">Their Name</string>
     <string name="their_number">Their Number</string>
+    <string name="symp_recorder"><u>Symptom Editor</u></string>
+    <string name="message_recorder"><u>Message Recorder</u></string>
+    <string name="moodDesc">Type a description of how you\'re feeling here…</string>
+    <string name="save_symptom">Save Changes</string>
+    <string name="contact_name_key">contactName</string>
+    <string name="contact_number_key">contactNumber</string>
+    <string name="contactFile">contactFile</string>
+    <string-array name="symp_name_array">
+        <item>Dizziness</item>
+        <item>Congestion</item>
+        <item>Headache</item>
+        <item>Fever</item>
+        <item>Cough</item>
+        <item>Vomiting</item>
+        <item>Chest pain</item>
+        <item>Severe pains</item>
+        <item>Pneumonia</item>
+        <item>Other</item>
+    </string-array>
 </resources>

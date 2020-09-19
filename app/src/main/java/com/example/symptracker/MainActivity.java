@@ -10,13 +10,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button recSympBtn;
+    Button calendarBtn;
+    Button contactBtn;
+    TextView welcome_msg;
 
-
-    private Button recSympBtn;
-    private Button calendarBtn;
-    private Button contactBtn;
-    private TextView welcome_msg;
-
+    //TODO: add rest of activities
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
         //The name part of the message should be updated once user's name recorded and stored in database
         welcome_msg = findViewById(R.id.welcome_msg);
 
+
+
         recSympBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //THESE WILL BE UNCOMMENTED WHEN THEIR SCREENS ARE MADE
-                /*Intent intent = new Intent(getApplicationContext(), SympRecorder.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
+                //Intent intent = new Intent(getApplicationContext(), DatabaseTester.class);
+                startActivity(intent);
             }
         });
 
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SympContact.class);
                 startActivity(intent);
-                //ok, this works, it goes to the contact screen
             }
         });
     }
