@@ -32,6 +32,7 @@ public class DBHandler extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        //create a table with the columns name, isSevere, and note
         String CREATE_SYMPTOM_TABLE = "CREATE TABLE " + TABLE_SYMPTOMS + "("
                 + KEY_NAME + " TEXT," + KEY_IS_SEVERE
                 + " NOT NULL CHECK (" + KEY_IS_SEVERE + " IN (0, 1)" + ")," + KEY_NOTE + " TEXT " + ")";
@@ -41,6 +42,7 @@ public class DBHandler extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        //upon change, drops the table if it already exists, and recreates it
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SYMPTOMS);
 
         onCreate(db);

@@ -5,26 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
-/*import java.util.ArrayList;
-import java.util.List;
-import android.app.Activity;
-import android.widget.AdapterView.OnItemSelectedListener;*/ //for some reason they want to be optimised
 
 public class RecordSymptom extends AppCompatActivity {
 
     Spinner sympSelect;
     EditText symptomTextEntry;
     Button saveBtn;
-    //Symptom[] symparray;
     String note = "";
-    /*AdapterView<?> parent;
-    View view;*/
     String symptom = "";
     DBHandler db = new DBHandler(this);
     boolean severity;
@@ -51,31 +42,9 @@ public class RecordSymptom extends AppCompatActivity {
         db.addSymptom(new Symptom("other", false));
         //do we even need to do this if we're treating symp objects as user recorded ones rather than system references ones?
 
-
-        /*symparray = {
-                new Symptom("headache", false); //use constructor to make the 6 symptoms
-        new Symptom("fever", true);
-        new Symptom("cough", false);
-        new Symptom("vomiting", false);
-        new Symptom("chest pain", true);
-        new Symptom("severe pains", true);
-            }*/
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.symp_name_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sympSelect.setAdapter(adapter);
-
-        /*@Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-        {
-            //upon selecting spinner item, set it to symptom var
-            symptom = parent.getItemAtPosition(position).toString();
-            //shows selected symptom item
-            Toast.makeText(parent.getContext(), "Selected: " + symptom, Toast.LENGTH_LONG).show();
-            //set save btn as being auto turned off, and then make save btn functional at end of this method
-        }*/
-
-        //initSymptoms();
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,18 +55,20 @@ public class RecordSymptom extends AppCompatActivity {
                 symptom = sympSelect.getSelectedItem().toString();
                 severity = isSevere(symptom);
                 //oh shit, do we need to create a separate database for actually RECORDING the user's symptoms?
-                db.addSymptom(new Symptom(symptom, severity, note));
-                Log.d("Insert: ", "Added new user symptom to database");
+                Symptom s = new Symptom(symptom, severity, note);
+                db.addSymptom(s);
+                //for testing purposes
+                Log.d("Insert: ", "Added new user symptom to database: " + s.toString());
                 //resets the text in the box
                 symptomTextEntry.getText().clear();
-                //TODO: send sms if severity == yes
-                //don't think we need to reset the dropdown box again
+
             }
         });
     }
 
-    private boolean isSevere(String name)
-    {
+    private boolean isSevere(String name) {
+        //switch case determines if symptom selected is counted as severe or not
+        //this will then help in alerting the emergency contact if a worrying symptom is selected
         switch (name.toLowerCase()) {
             case "fever":
             case "chest pain":
@@ -114,41 +85,7 @@ public class RecordSymptom extends AppCompatActivity {
             default:
                 severity = false;
                 break;
-                /*severity = false;
-                break;
-            case "fever":
-                severity = true;
-                break;
-
-                severity = false;
-                break;
-            case "chest pain":
-                severity = true;
-                break;
-            case "severe pains":
-                severity = true;
-                break;
-
-                severity = false;
-                break;
-
-                severity = false;
-                break;
-            case "pneumonia":
-                severity = true;
-                break;
-
-                severity = false;
-                break;*/
         }
         return severity;
     }
-
-    /*private void initSymptoms(){
-        try{
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }*/
 }
