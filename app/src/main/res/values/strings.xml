@@ -12,6 +12,9 @@
     <string name="message_recorder"><u>Message Recorder</u></string>
     <string name="moodDesc">Type a description of how you\'re feeling here…</string>
     <string name="save_symptom">Save Changes</string>
+    <string name="contact_name_key">contactName</string>
+    <string name="contact_number_key">contactNumber</string>
+    <string name="contactFile">contactFile</string>
     <string-array name="symp_name_array">
         <item>Dizziness</item>
         <item>Congestion</item>

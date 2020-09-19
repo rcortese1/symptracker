@@ -23,9 +23,9 @@ public class SympContact extends AppCompatActivity {
     private String contact_name = null;
     private String contact_email = null;
     private DBHandler db;
-    private final String CONTACT_NUMBER_KEY = "contactNumber";
-    private final String CONTACT_NAME_KEY = "contactName";
-
+    private String CONTACT_NUMBER_KEY = "";
+    private String CONTACT_NAME_KEY =  "";
+    private String resPref;
     Button addContactBtn;
     TextView contactName;
     TextView contactNumber;
@@ -37,6 +37,11 @@ public class SympContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symp_contact);
 
+        CONTACT_NAME_KEY = getResources().getString(R.string.contact_name_key);
+        CONTACT_NUMBER_KEY = getResources().getString(R.string.contact_number_key);
+        //Grabs the preferences file from the strings.xml to avoid hardcoding.
+        resPref = getResources().getString(R.string.contactFile);
+
         addContactBtn = findViewById(R.id.addContactBtn);
         profilePicture = findViewById(R.id.profilePic);
 
@@ -46,8 +51,10 @@ public class SympContact extends AppCompatActivity {
 
         db = new DBHandler(this);
 
-        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+        //Creates a preference object to get stored values
+        SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
+
         String defaultValue = "default";
         if(!pref.getString(CONTACT_NAME_KEY, defaultValue).equals(defaultValue))
         {
@@ -87,7 +94,7 @@ public class SympContact extends AppCompatActivity {
                 Log.d("TEST", contact_name);
                 Log.d("TEST", contact_number);
 
-                SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
 
                 //Contact number is the key as it is unique.
