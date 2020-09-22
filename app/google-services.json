@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1012280803883",
+    "firebase_url": "https://i-don-t-know-what-to-name-this.firebaseio.com",
+    "project_id": "i-don-t-know-what-to-name-this",
+    "storage_bucket": "i-don-t-know-what-to-name-this.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012280803883:android:dd8866d485b08cccf9606e",
+        "android_client_info": {
+          "package_name": "com.example.symptracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012280803883-seotuj7jqfnl3e4c1v0tnr6fes128t4r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuMt4b4K8dPykof7zw1JmjtDhfoILkNP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012280803883-seotuj7jqfnl3e4c1v0tnr6fes128t4r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
