@@ -17,10 +17,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class RecordSymptom extends AppCompatActivity {
 
     private static final int SEND_MESSAGE = 3;
     private static final int SMS_PERMISSION_REQ = 1230;
+    private FBHandler fb;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Spinner sympSelect;
     EditText symptomTextEntry;
     Button saveBtn;
@@ -28,7 +33,9 @@ public class RecordSymptom extends AppCompatActivity {
     String symptom = "";
 
     String phoneNumber = "";
-    DBHandler db = new DBHandler(this);
+    // Deprecated database call but here for posterity
+    // DBHandler db = new DBHandler(this);
+
     boolean severity;
 
     @Override
@@ -40,18 +47,9 @@ public class RecordSymptom extends AppCompatActivity {
         symptomTextEntry = findViewById(R.id.symptomTextEntry);
         saveBtn = findViewById(R.id.saveBtn);
 
+        fb = new FBHandler(db);
+
         Log.d("Insert: ", "Inserting...");
-        db.addSymptom(new Symptom("headache", false));
-        db.addSymptom(new Symptom("fever", true));
-        db.addSymptom(new Symptom("cough", false));
-        db.addSymptom(new Symptom("vomiting", false));
-        db.addSymptom(new Symptom("chest pain", true));
-        db.addSymptom(new Symptom("severe pains", true));
-        db.addSymptom(new Symptom("dizziness", false));
-        db.addSymptom(new Symptom("congestion", false));
-        db.addSymptom(new Symptom("pneumonia", true));
-        db.addSymptom(new Symptom("other", false));
-        //do we even need to do this if we're treating symp objects as user recorded ones rather than system references ones?
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.symp_name_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -62,16 +60,16 @@ public class RecordSymptom extends AppCompatActivity {
             public void onClick(View view) {
                 //get details from edit text
                 note = symptomTextEntry.getText().toString();
+
                 //get chosen symptom from spinner select
                 symptom = sympSelect.getSelectedItem().toString();
                 severity = isSevere(symptom);
-                //oh shit, do we need to create a separate database for actually RECORDING the user's symptoms?
+
                 Symptom s = new Symptom(symptom, severity, note);
-                db.addSymptom(s);
+                fb.addSymptom(s);
+                //db.addSymptom(s);
                 //for testing purposes
                 Log.d("Insert: ", "Added new user symptom to database: " + s.toString());
-                //resets the text in the box
-
 
                 if(s.isSevere() == true)
                 {
@@ -89,7 +87,7 @@ public class RecordSymptom extends AppCompatActivity {
                     sendMessage(message);
                 }
 
-
+                //resets the text in the box
                 symptomTextEntry.getText().clear();
 
             }
