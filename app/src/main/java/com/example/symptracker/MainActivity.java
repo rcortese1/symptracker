@@ -1,129 +1,26 @@
 package com.example.symptracker;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button recSympBtn;
-    Button calendarBtn;
-    Button contactBtn;
-    Button crashBtn;
-
-    AlertDialog.Builder builder;
-
-    String TAG = "Auth";
-
-    private FirebaseAuth mAuth;
-
-    TextView welcome_msg;
-
-    //TODO: add rest of activities
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void login()
-    {
-        builder.setMessage(R.string.login)
-                .setPositiveButton(R.string.login, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, "You clicked me!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, "You didn't :(", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setView(R.id.dialogbox);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    public void updateUI(FirebaseUser user)
-    {
-        if(user != null)
-        {
-
-            String introMSG = getResources().getString(R.string.hello, user.getDisplayName());
-            welcome_msg.setText(introMSG);
-        }
-        else
-        {
-            Log.d("ABC!", "First??");
-            //login();
-        }
-    }
-
-    public void signUp(String email, String password)
-    {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            Log.d(TAG, "createUserWithEmail=success!");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        }
-                        else
-                        {
-                            Log.d(TAG, "createUserWithEmail=failure!");
-                            Toast.makeText(MainActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
-    public void signIn(String email, String password)
-    {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            Log.d(TAG, "signin=success!");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        }
-                        else
-                        {
-                            Log.d(TAG, "signin=failure!");
-                            Toast.makeText(MainActivity.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
+    private String TAG = "LoginTAG";
+    private FirebaseAuth auth;
+    private Button logoutButton, deleteButton;
 
 
     @Override
@@ -131,49 +28,62 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recSympBtn = findViewById(R.id.recSympBtn);
-        calendarBtn = findViewById(R.id.calendarBtn);
-        contactBtn = findViewById(R.id.contactBtn);
+        //check if user is logged in/out
+        auth = FirebaseAuth.getInstance();
+        checkIfLoggedIn();
 
-        mAuth = FirebaseAuth.getInstance();
+        //Buttons
+        logoutButton = (Button) findViewById(R.id.logoutBtn);
+        deleteButton = (Button) findViewById(R.id.deleteBtn);
 
-        builder = new AlertDialog.Builder(this);
-
-        //The name part of the message should be updated once user's name recorded and stored in database
-        welcome_msg = findViewById(R.id.welcome_msg);
-
-        crashBtn = findViewById(R.id.crashButton);
-        crashBtn.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                throw new RuntimeException("Test Crash");
+                logout();
             }
         });
 
-        recSympBtn.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
-                //Intent intent = new Intent(getApplicationContext(), DatabaseTester.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                deleteAccount();
             }
         });
+    }
 
-        calendarBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //THESE WILL BE UNCOMMENTED WHEN THEIR SCREENS ARE MADE
-                /*Intent intent = new Intent(getApplicationContext(), SympCalendar.class);
-                startActivity(intent);*/
-            }
-        });
+    private void logout()
+    {
+        AuthUI.getInstance()
+                .signOut(MainActivity.this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // user is now signed out
+                        startActivity(new Intent(MainActivity.this, FirebaseAuthentication.class));
+                        finish();
+                    }
+                });
+    }
 
-        contactBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SympContact.class);
-                startActivity(intent);
-            }
-        });
+    private void deleteAccount()
+    {
+        AuthUI.getInstance()
+                .delete(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        logout();
+                    }
+                });
+    }
+
+    private void checkIfLoggedIn() {
+        if (auth.getCurrentUser() != null) {
+            Log.d(TAG, "User logged in : " + auth.getCurrentUser().getDisplayName());
+        } else {
+            Log.d(TAG, "No user logged in");
+            Intent intent = new Intent(this, FirebaseAuthentication.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
