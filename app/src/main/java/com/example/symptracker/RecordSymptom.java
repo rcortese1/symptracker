@@ -68,6 +68,10 @@ public class RecordSymptom extends AppCompatActivity {
         Symptom chest_pain = new Symptom("Chest pain", true);
         Symptom severe_pain = new Symptom("Severe pain", true);
         Symptom other = new Symptom("Other", true);
+        /*
+        Other is flagged as severe to err on the side of caution
+        For example: Brain haemorrhage isn't on the list but we would say it's rather severe
+         */
 
         symptomList.add(pneumonia);
         symptomList.add(dizziness);
@@ -79,7 +83,6 @@ public class RecordSymptom extends AppCompatActivity {
         symptomList.add(chest_pain);
         symptomList.add(severe_pain);
         symptomList.add(other);
-
         fb = new FBHandler(db);
 
         Log.d("Insert: ", "Inserting...");
