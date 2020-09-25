@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SympHome extends AppCompatActivity {
 
     Button recSympBtn;
     Button calendarBtn;
     Button contactBtn;
     Button crashBtn;
+    FirebaseUser user;
+    String name;
 
 
 
@@ -123,12 +128,21 @@ public class SympHome extends AppCompatActivity {
         calendarBtn = findViewById(R.id.calendarBtn);
         contactBtn = findViewById(R.id.contactBtn);
 
+        //get current user, and get their name
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        name = user.getDisplayName();
+        //need to update string resource for name when user updates/changes?
+        //can i do an if-statement in the res file? or do i just do one here
+        //can i remotely update the res string?
+
+
         //mAuth = FirebaseAuth.getInstance();
 
         //builder = new AlertDialog.Builder(this);
 
-        //The name part of the message should be updated once user's name recorded and stored in database
+        //welcome_msg = getString(R.string.hello, name);
         welcome_msg = findViewById(R.id.welcome_msg);
+        welcome_msg.setText(getString(R.string.hello, name));
 
         crashBtn = findViewById(R.id.crashButton);
         crashBtn.setOnClickListener(new View.OnClickListener() {
