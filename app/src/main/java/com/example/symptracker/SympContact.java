@@ -22,7 +22,7 @@ public class SympContact extends AppCompatActivity {
     private String contact_number = null;
     private String contact_name = null;
     private String contact_email = null;
-    private DBHandler db;
+    //private DBHandler db;
     private String CONTACT_NUMBER_KEY = "";
     private String CONTACT_NAME_KEY =  "";
     private String resPref;
@@ -49,7 +49,7 @@ public class SympContact extends AppCompatActivity {
         contactName = findViewById(R.id.contactName);
         contactNumber = findViewById(R.id.contactNumber);
 
-        db = new DBHandler(this);
+        //db = new DBHandler(this);
 
         //Creates a preference object to get stored values
         SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
@@ -104,12 +104,9 @@ public class SympContact extends AppCompatActivity {
                 editor.putString(CONTACT_NAME_KEY, contact_name);
                 editor.commit();
 
-
-
                 contactNumber.setText(contact_number);
                 contactName.setText(contact_name);
 
-                //TODO: place emergency in shared preference
                 cursor.close();
 
 

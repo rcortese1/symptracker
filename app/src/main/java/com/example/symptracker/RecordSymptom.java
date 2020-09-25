@@ -17,8 +17,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+
+import java.util.ArrayList;
+
+import java.util.List;
 
 public class RecordSymptom extends AppCompatActivity {
 
@@ -26,17 +30,20 @@ public class RecordSymptom extends AppCompatActivity {
     private static final int SMS_PERMISSION_REQ = 1230;
     private FBHandler fb;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    Spinner sympSelect;
-    EditText symptomTextEntry;
-    Button saveBtn;
-    String note = "";
-    String symptom = "";
+    private Spinner sympSelect;
+    private EditText symptomTextEntry;
+    private Button saveBtn;
+    private String note = "";
+    private String symptom = "";
+    private String phoneNumber = "";
+    private boolean severity;
 
-    String phoneNumber = "";
-    // Deprecated database call but here for posterity
-    // DBHandler db = new DBHandler(this);
+    List<Symptom> symptomList;
 
-    boolean severity;
+    /*
+    This activity records symptoms experienced by users and saves them to the
+    online firebase storage that we have setup.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,32 @@ public class RecordSymptom extends AppCompatActivity {
         sympSelect = findViewById(R.id.sympSelect);
         symptomTextEntry = findViewById(R.id.symptomTextEntry);
         saveBtn = findViewById(R.id.saveBtn);
+        symptomList = new ArrayList<Symptom>();
+
+        /*
+        Initializes a bunch of symptoms.
+        */
+        Symptom pneumonia = new Symptom("Pneumonia", true);
+        Symptom dizziness = new Symptom("Dizziness", false);
+        Symptom congestion = new Symptom("Congestion", false);
+        Symptom headache = new Symptom("Headache", false);
+        Symptom fever = new Symptom("Fever", false);
+        Symptom cough = new Symptom("Cough", false);
+        Symptom vomiting = new Symptom("Vomiting", true);
+        Symptom chest_pain = new Symptom("Chest pain", true);
+        Symptom severe_pain = new Symptom("Severe pain", true);
+        Symptom other = new Symptom("Other", true);
+
+        symptomList.add(pneumonia);
+        symptomList.add(dizziness);
+        symptomList.add(congestion);
+        symptomList.add(headache);
+        symptomList.add(fever);
+        symptomList.add(cough);
+        symptomList.add(vomiting);
+        symptomList.add(chest_pain);
+        symptomList.add(severe_pain);
+        symptomList.add(other);
 
         fb = new FBHandler(db);
 
@@ -60,18 +93,21 @@ public class RecordSymptom extends AppCompatActivity {
             public void onClick(View view) {
                 //get details from edit text
                 note = symptomTextEntry.getText().toString();
-
-                //get chosen symptom from spinner select
                 symptom = sympSelect.getSelectedItem().toString();
-                severity = isSevere(symptom);
 
-                Symptom s = new Symptom(symptom, severity, note);
-                fb.addSymptom(s);
-                //db.addSymptom(s);
+                Symptom s = retrieveSymptom(symptom);
+                Recording r = new Recording(s, note);
+                //Stores the symptom recording on the cloud.
+                fb.addRecording(r);
                 //for testing purposes
                 Log.d("Insert: ", "Added new user symptom to database: " + s.toString());
 
-                if(s.isSevere() == true)
+                /*
+                When a symptom is considered severe, as soon as a recording has been submitted
+                an SMS is automatically sent to the emergency contact specified in
+                SympContact activity specifying the symptom they experienced and the victim's note.
+                */
+                if(r.getSymptom().isSevere())
                 {
                     String resPref = getResources().getString(R.string.contactFile);
                     SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
@@ -94,6 +130,11 @@ public class RecordSymptom extends AppCompatActivity {
         });
     }
 
+    /*
+    Requests message permissions if permissions have not been granted.
+    If permissions are granted, a message is sent to the phone number supplied
+    in emergency contact shared preference and a toast confirms message for the user.
+     */
     private void sendMessage(String message)
     {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
@@ -111,27 +152,18 @@ public class RecordSymptom extends AppCompatActivity {
         }
     }
 
-
-    private boolean isSevere(String name) {
-        //switch case determines if symptom selected is counted as severe or not
-        //this will then help in alerting the emergency contact if a worrying symptom is selected
-        switch (name.toLowerCase()) {
-            case "fever":
-            case "chest pain":
-            case "severe pains":
-            case "pneumonia":
-                severity = true;
-                break;
-            case "headache":
-            case "coughing":
-            case "vomiting":
-            case "dizziness":
-            case "congestion":
-            case "other":
-            default:
-                severity = false;
-                break;
+    //Converts the spinner options to a symptom object
+    private Symptom retrieveSymptom(String symptom)
+    {
+        symptom = symptom.toLowerCase();
+        for(Symptom s: symptomList)
+        {
+            if(s.getName().equalsIgnoreCase(symptom))
+            {
+                return s;
+            }
         }
-        return severity;
+        return null;
     }
+
 }

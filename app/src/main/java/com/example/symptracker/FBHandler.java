@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -15,22 +17,26 @@ import java.util.Map;
 public class FBHandler
 {
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
     private String TAG = "Store";
+    private FirebaseUser user;
 
     public FBHandler(FirebaseFirestore db)
     {
         this.db = db;
     }
 
-    public void addSymptom(Symptom s)
+    public void addRecording(Recording r)
     {
-        Map<String, Object> symptom = new HashMap<>();
-        symptom.put("Name",  s.getName());
-        symptom.put("isSevere", s.isSevere());
-        symptom.put("Note", s.getNote());
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        Map<String, Object> recording = new HashMap<>();
+        recording.put("Symptom",  r.getSymptom());
+        recording.put("Note", r.getNote());
 
-        db.collection("Symptoms")
-                .add(symptom)
+        Log.d("Fireball", user.getEmail());
+        db.collection(user.getEmail())
+                .add(recording)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

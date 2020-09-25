@@ -12,14 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!-- this was changed -->
-
-        <activity android:name=".SympHome"></activity>
+        <activity android:name=".SympCalendar"></activity>
         <activity android:name=".FirebaseAuthentication" />
-        <activity android:name=".DatabaseTester" />
         <activity android:name=".RecordSymptom" />
         <activity android:name=".SympContact" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SympHome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
