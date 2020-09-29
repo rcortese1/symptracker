@@ -33,6 +33,8 @@ public class FBHandler
         Map<String, Object> recording = new HashMap<>();
         recording.put("Symptom",  r.getSymptom());
         recording.put("Note", r.getNote());
+        recording.put("Time in millis", r.getMillis());
+        recording.put("Time as Date", r.getTime());
 
         Log.d("Fireball", user.getEmail());
         db.collection(user.getEmail())

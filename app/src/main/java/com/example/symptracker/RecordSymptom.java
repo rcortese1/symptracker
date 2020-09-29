@@ -103,7 +103,8 @@ public class RecordSymptom extends AppCompatActivity {
                 //Stores the symptom recording on the cloud.
                 fb.addRecording(r);
                 //for testing purposes
-                Log.d("Insert: ", "Added new user symptom to database: " + s.toString());
+                //Log.d("Insert: ", "Added new user symptom to database: " + s.toString());
+                Log.d("Insert: ", "Added new user symptom to db: " + r.toString());
 
                 /*
                 When a symptom is considered severe, as soon as a recording has been submitted
