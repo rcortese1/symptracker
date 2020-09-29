@@ -16,10 +16,12 @@ public class Recording
     {
         this.symptom = symptom;
         this.note = note;
+        //we call an instance of Calendar to get the current time of the Recording's instantiation,
+        //and then use that object to extract both the time in milliseconds and as a Date object
         cal = Calendar.getInstance();
+        //we store millis as a string for cloud firestore
         millis = String.valueOf(cal.getTimeInMillis());
         time = cal.getTime();
-
     }
 
     //When reading in from the database
@@ -47,6 +49,9 @@ public class Recording
     }
 
     public int getYear() {
+        //Because the Date class methods are deprecated, we need to make a GregorianCalendar,
+        //instantiate it to the time specified by the Date object, and then use the GregCal's methods to extract things like year, month etc.
+        //We do this so we can then search our symptoms by day/month/year, to then display on SympCalendar
         GregorianCalendar greg = new GregorianCalendar();
         greg.setTime(time);
         return greg.get(greg.YEAR);

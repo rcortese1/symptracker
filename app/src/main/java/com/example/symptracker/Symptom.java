@@ -5,6 +5,7 @@ public class Symptom
     private String name;
     private boolean isSevere;
 
+    //Multiple constructors for multiple uses, including for testing
     public Symptom()
     {
         this.name = null;
@@ -56,6 +57,7 @@ public class Symptom
         this.name = name;
     }
 
+    //Makes the toString more human-readable and user-friendly
     public String toString()
     {
         String capitalName = name.substring(0, 1).toUpperCase() + name.substring(1);
