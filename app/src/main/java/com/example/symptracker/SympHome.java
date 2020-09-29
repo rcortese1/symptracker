@@ -40,10 +40,8 @@ public class SympHome extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private String TAG = "LoginTAG";
-    //TODO: add rest of activities
 
     @Override
-
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
@@ -136,9 +134,11 @@ public class SympHome extends AppCompatActivity {
         checkIfLoggedIn();
 
 
+        welcome_msg = findViewById(R.id.welcome_msg);
         //The name part of the message should be updated once user's name recorded and stored in database
 
 
+        //When user clicks button, starts the appropriate activity
         recSympBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,12 +161,8 @@ public class SympHome extends AppCompatActivity {
         calendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //THESE WILL BE UNCOMMENTED WHEN THEIR SCREENS ARE MADE
                 Intent intent = new Intent(getApplicationContext(), SympCalendar.class);
                 startActivity(intent);
-                //when add symptom, can add that as an event on the calendar for the current date and time, including the note as 'event description'
-                //we use intents for that
-                //for viewing the calendar, use CalendarView widget dummy
             }
         });
 
@@ -179,14 +175,15 @@ public class SympHome extends AppCompatActivity {
         });
     }
 
+    //Checks if user is logged in - if so, continues on. If not, sends to login activity
     private void checkIfLoggedIn() {
         if (auth.getCurrentUser() != null) {
             Log.d(TAG, "User logged in : " + auth.getCurrentUser().getDisplayName());
             updateUI();
         } else {
-
-            Intent intent = new Intent(SympHome.this, FirebaseAuthentication.class);
-
+            Log.d(TAG, "No user logged in");
+            Intent intent = new Intent(this, FirebaseAuthentication.class);
+            startActivity(intent);
             finish();
 
         }

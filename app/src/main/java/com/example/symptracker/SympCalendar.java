@@ -33,24 +33,14 @@ public class SympCalendar extends AppCompatActivity {
 
         recordingList = fb.getRecordings();
 
-        //oh, put a textview in the XML, and when a date is selected, trigger onDateSelect method
-        //then use that date to see if any symptoms in db match that date
-        //if so, display them. else, display "no symps for date displayed"
-        //looks like we can't incorp google calendar functionality easily :/
-        //so we just make our own make-pretend calendar
-        //can we highlight dates that have symptoms?
-        //i know there's a function that changes date colours - NVM its deprecated
+        //We retrieve a list of Recordings (user's symptoms),
+        //then we sort through them by date and display them on the appropriate calendar day,
+        //as the day changes with our onDateChangeListener function
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                //viewSymps.setText(""); //search for symptoms by date, and display all that match
-                //maybe use !viewSymps.hasSelection() to check for null instead?
-                //oh, or length() == 0
-                //get symptom's Date object, convert it to GregorianCalendar, then use those methods to extract day month year
-                //and then search thru database to find those that match. wait. shit. should i convert to gregorian first? but how do i store that. hmmmm.
-                //A METHOD.
-
+                //We sort our recordings to display in order of when they were entered, if multiple entered on the same day
                 recordingList.sort(new Comparator<Recording>() {
                     @Override
                     public int compare(Recording o1, Recording o2) {
@@ -60,6 +50,7 @@ public class SympCalendar extends AppCompatActivity {
 
                 viewSymps.setMovementMethod(new ScrollingMovementMethod());
 
+                //We iterate through our Recordings list, and show all that match the date
                 boolean found = false;
                 String displaySymptoms = "";
                 for(Recording r : recordingList)

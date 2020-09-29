@@ -87,6 +87,7 @@ public class RecordSymptom extends AppCompatActivity {
 
         Log.d("Insert: ", "Inserting...");
 
+        //This makes our spinner list the options we specified in the strings.xml file
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.symp_name_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sympSelect.setAdapter(adapter);

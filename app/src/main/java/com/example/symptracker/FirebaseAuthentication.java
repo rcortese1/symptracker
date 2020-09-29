@@ -28,16 +28,13 @@ public class FirebaseAuthentication extends AppCompatActivity {
         Log.d(TAG, "I am cool AND inside Firebase Authentication");
         auth = FirebaseAuth.getInstance();
 
-        //build AuthUI programmatically (nothing needing to be changed in your XML file
+        //build AuthUI programmatically (nothing needing to be changed in your XML file)
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(Arrays.asList(
-                                //new AuthUI.IdpConfig.GoogleBuilder().build(), commented as no google signin method as of yet
+                                //new AuthUI.IdpConfig.GoogleBuilder().build(), //commented we do not use google sign-in
                                 new AuthUI.IdpConfig.EmailBuilder().build()))
-                        //TODO: Place logo in resources folder
-                        //TODO: Change to single list
-                        //.setLogo(R.drawable.logo)
                         .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
                         .build(),
                 RC_SIGN_IN);
@@ -65,7 +62,7 @@ public class FirebaseAuthentication extends AppCompatActivity {
                     Toast.makeText(this, "Sign-in cancelled", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                // Sign in failed due to network unavailability
                 if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK)
                 {
                     Toast.makeText(this, "Sign-in failed, no network", Toast.LENGTH_SHORT).show();
