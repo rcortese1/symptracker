@@ -153,7 +153,6 @@ public class RecordSymptom extends AppCompatActivity {
             Log.d("MAD", "SMS Permission is given");
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-            Toast.makeText(RecordSymptom.this, "Message Sent", Toast.LENGTH_LONG).show();
         }
     }
 

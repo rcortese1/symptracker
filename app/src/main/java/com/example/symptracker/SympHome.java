@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,9 +31,11 @@ public class SympHome extends AppCompatActivity {
     Button recSympBtn;
     Button calendarBtn;
     Button contactBtn;
+    String resPref;
+    private String CONTACT_NUMBER_KEY = "";
+    private String CONTACT_NAME_KEY =  "";
 
-
-
+    String defaultValue;
     TextView welcome_msg;
 
     private FirebaseAuth auth;
@@ -106,31 +111,50 @@ public class SympHome extends AppCompatActivity {
     Initialises the layout and buttons that redirect to other activities.
      */
 
+    protected void onResume()
+    {
+        super.onResume();
+        checkIfLoggedIn();
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symp_home);
 
+        resPref = getResources().getString(R.string.contactFile);
         recSympBtn = findViewById(R.id.recSympBtn);
         calendarBtn = findViewById(R.id.calendarBtn);
         contactBtn = findViewById(R.id.contactBtn);
+        welcome_msg = findViewById(R.id.welcome_msg);
+        defaultValue = "default";
+        CONTACT_NAME_KEY = getResources().getString(R.string.contact_name_key);
+        CONTACT_NUMBER_KEY = getResources().getString(R.string.contact_number_key);
 
         auth = FirebaseAuth.getInstance();
+
+
         checkIfLoggedIn();
 
 
-
-
         //The name part of the message should be updated once user's name recorded and stored in database
-        welcome_msg = findViewById(R.id.welcome_msg);
 
-        //Takes the current logged in user's name and displays it instead of "User"
-        welcome_msg.setText(getString(R.string.hello, auth.getCurrentUser().getDisplayName()));
 
         recSympBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
-                startActivity(intent);
+
+                SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
+
+                if(pref.getString(CONTACT_NAME_KEY, defaultValue).equals(defaultValue))
+                {
+                    Toast.makeText(SympHome.this, "You need to select an emergency contact first!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Intent intent = new Intent(getApplicationContext(), RecordSymptom.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -158,11 +182,21 @@ public class SympHome extends AppCompatActivity {
     private void checkIfLoggedIn() {
         if (auth.getCurrentUser() != null) {
             Log.d(TAG, "User logged in : " + auth.getCurrentUser().getDisplayName());
+            updateUI();
         } else {
-            Log.d(TAG, "No user logged in");
-            Intent intent = new Intent(this, FirebaseAuthentication.class);
-            startActivity(intent);
+
+            Intent intent = new Intent(SympHome.this, FirebaseAuthentication.class);
+
             finish();
+
         }
+
     }
+
+    private void updateUI()
+    {
+        //Takes the current logged in user's name and displays it instead of "User"
+        welcome_msg.setText(getString(R.string.hello, auth.getCurrentUser().getDisplayName()));
+    }
+
 }

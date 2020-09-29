@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class FirebaseAuthentication extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
-    private String TAG = "Auth";
+    private String TAG = "Diamonds";
     private FirebaseAuth auth;
 
     @Override
@@ -25,6 +25,7 @@ public class FirebaseAuthentication extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symp_home);
 
+        Log.d(TAG, "I am cool AND inside Firebase Authentication");
         auth = FirebaseAuth.getInstance();
 
         //build AuthUI programmatically (nothing needing to be changed in your XML file
