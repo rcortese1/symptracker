@@ -59,7 +59,7 @@ public class Symptom
     public String toString()
     {
         String capitalName = name.substring(0, 1).toUpperCase() + name.substring(1);
-        return "Name: " + capitalName + "\nSevere?: " + isSevere();
+        return "Name: " + capitalName + "\nSevere?: " + severeYesOrNo();
     }
 
 }
