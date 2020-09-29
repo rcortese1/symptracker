@@ -95,6 +95,8 @@ public class SympHome extends AppCompatActivity {
             case R.id.deleteAccOpt:
                 deleteAccount();
                 return true;
+            case R.id.databaseTest:
+
             default:
                 return super.onOptionsItemSelected(item);
         }

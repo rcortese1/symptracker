@@ -33,6 +33,19 @@ public class Symptom
         return this.isSevere;
     }
 
+    public String severeYesOrNo()
+    {
+        if(isSevere)
+        {
+            return "Yes";
+        }
+        else
+        {
+            return "No";
+        }
+    }
+
+
     public void setSeverity(boolean b)
     {
         this.isSevere = b;
@@ -45,7 +58,8 @@ public class Symptom
 
     public String toString()
     {
-        return "Name: " + getName() + "\nSevere?: " + isSevere();
+        String capitalName = name.substring(0, 1).toUpperCase() + name.substring(1);
+        return "Name: " + capitalName + "\nSevere?: " + isSevere();
     }
 
 }

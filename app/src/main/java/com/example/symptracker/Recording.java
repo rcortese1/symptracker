@@ -9,7 +9,7 @@ public class Recording
     private Symptom symptom;
     private String note;
     private Calendar cal;
-    private long millis;
+    private String millis;
     private Date time;
 
     public Recording(Symptom symptom, String note)
@@ -17,8 +17,18 @@ public class Recording
         this.symptom = symptom;
         this.note = note;
         cal = Calendar.getInstance();
-        millis = cal.getTimeInMillis();
+        millis = String.valueOf(cal.getTimeInMillis());
         time = cal.getTime();
+
+    }
+
+    //When reading in from the database
+    public Recording(Symptom symptom, String note, String millis, Date time)
+    {
+        this.symptom = symptom;
+        this.note = note;
+        this.millis = millis;
+        this.time = time;
     }
 
     public String getNote()
@@ -26,7 +36,7 @@ public class Recording
         return note;
     }
 
-    public long getMillis() { return millis; }
+    public String getMillis() { return millis; }
 
     public Date getTime() { return time; }
 
@@ -56,7 +66,6 @@ public class Recording
 
     public String toString()
     {
-        return "Symptom: " + getSymptom() + "\nNote: " + getNote()
-             + "\nTime in millis: " + getMillis() + "\nTime in Date: " + getTime();
+        return "\n" + getSymptom() + "\nNote: " + getNote() + "\nTime: " + getTime() + "\n";
     }
 }

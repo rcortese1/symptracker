@@ -66,7 +66,7 @@ public class RecordSymptom extends AppCompatActivity {
         Symptom cough = new Symptom("Cough", false);
         Symptom vomiting = new Symptom("Vomiting", true);
         Symptom chest_pain = new Symptom("Chest pain", true);
-        Symptom severe_pain = new Symptom("Severe pain", true);
+        Symptom severe_pain = new Symptom("Severe pains", true);
         Symptom other = new Symptom("Other", true);
         /*
         Other is flagged as severe to err on the side of caution
@@ -98,6 +98,7 @@ public class RecordSymptom extends AppCompatActivity {
                 note = symptomTextEntry.getText().toString();
                 symptom = sympSelect.getSelectedItem().toString();
 
+                Log.d("SeverePainError", symptom);
                 Symptom s = retrieveSymptom(symptom);
                 Recording r = new Recording(s, note);
                 //Stores the symptom recording on the cloud.
