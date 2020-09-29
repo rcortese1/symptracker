@@ -34,6 +34,9 @@ public class SympCalendar extends AppCompatActivity {
                 viewSymps.setText(""); //search for symptoms by date, and display all that match
                 //maybe use !viewSymps.hasSelection() to check for null instead?
                 //oh, or length() == 0
+                //get symptom's Date object, convert it to GregorianCalendar, then use those methods to extract day month year
+                //and then search thru database to find those that match. wait. shit. should i convert to gregorian first? but how do i store that. hmmmm.
+                //A METHOD.
                 if(viewSymps.getText() == "")
                 {
                     viewSymps.setText("No symptoms recorded on " + day +"/"+month+"/"+year);

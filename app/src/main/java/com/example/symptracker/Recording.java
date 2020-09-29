@@ -2,6 +2,7 @@ package com.example.symptracker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Recording
 {
@@ -33,6 +34,24 @@ public class Recording
     public Symptom getSymptom()
     {
         return new Symptom(symptom);
+    }
+
+    public int getYear() {
+        GregorianCalendar greg = new GregorianCalendar();
+        greg.setTime(time);
+        return greg.get(greg.YEAR);
+    }
+
+    public int getMonth() {
+        GregorianCalendar greg = new GregorianCalendar();
+        greg.setTime(time);
+        return greg.get(greg.MONTH);
+    }
+
+    public int getDay() {
+        GregorianCalendar greg = new GregorianCalendar();
+        greg.setTime(time);
+        return greg.get(greg.DAY_OF_MONTH);
     }
 
     public String toString()
