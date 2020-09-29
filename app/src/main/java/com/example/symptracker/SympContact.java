@@ -22,7 +22,7 @@ public class SympContact extends AppCompatActivity {
     private String contact_number = null;
     private String contact_name = null;
     private String contact_email = null;
-    private DBHandler db;
+    //private DBHandler db;
     private String CONTACT_NUMBER_KEY = "";
     private String CONTACT_NAME_KEY =  "";
     private String resPref;
@@ -45,11 +45,11 @@ public class SympContact extends AppCompatActivity {
         addContactBtn = findViewById(R.id.addContactBtn);
         profilePicture = findViewById(R.id.profilePic);
 
-        /* These two should be updated when emergency contact is selected to match the contact's info */
+        /* These two are updated when emergency contact is selected to match the contact's info */
         contactName = findViewById(R.id.contactName);
         contactNumber = findViewById(R.id.contactNumber);
 
-        db = new DBHandler(this);
+        //db = new DBHandler(this);
 
         //Creates a preference object to get stored values
         SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
@@ -70,9 +70,6 @@ public class SympContact extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                 startActivityForResult(intent, PICK_CONTACT);
-
-
-                /* insert code that happens when button clicked */
             }
         });
     }
@@ -90,7 +87,7 @@ public class SympContact extends AppCompatActivity {
                 contact_name = cursor.getString(numberIndex);
                 numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                 contact_number = cursor.getString(numberIndex);
-                // Do something with the phone contact_number
+
                 Log.d("TEST", contact_name);
                 Log.d("TEST", contact_number);
 
@@ -104,15 +101,10 @@ public class SympContact extends AppCompatActivity {
                 editor.putString(CONTACT_NAME_KEY, contact_name);
                 editor.commit();
 
-
-
                 contactNumber.setText(contact_number);
                 contactName.setText(contact_name);
 
-                //TODO: place emergency in shared preference
                 cursor.close();
-
-
             }
         }
     }

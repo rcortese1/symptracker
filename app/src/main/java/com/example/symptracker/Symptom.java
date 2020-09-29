@@ -4,38 +4,25 @@ public class Symptom
 {
     private String name;
     private boolean isSevere;
-    private String note = "";
 
+    //Multiple constructors for multiple uses, including for testing
     public Symptom()
     {
         this.name = null;
         isSevere = false;
-        note = null;
     }
 
     public Symptom(String name, boolean isSevere)
     {
         this.name = name.toLowerCase();
         this.isSevere = isSevere;
-        //note set to . for testing purposes
-        note = ".";
     }
 
-    public Symptom(String name, String note)
+    public Symptom(Symptom s)
     {
-        this.name = name.toLowerCase();
-        isSevere = false;
-        this.note = note;
+        this.name = s.name;
+        this.isSevere = s.isSevere;
     }
-
-    public Symptom(String name, boolean isSevere, String note)
-    {
-        this.name = name.toLowerCase();
-        this.isSevere = isSevere;
-        this.note = note;
-    }
-
-    //get methods
 
     public String getName()
     {
@@ -47,12 +34,18 @@ public class Symptom
         return this.isSevere;
     }
 
-    public String getNote()
+    public String severeYesOrNo()
     {
-        return note;
+        if(isSevere)
+        {
+            return "Yes";
+        }
+        else
+        {
+            return "No";
+        }
     }
 
-    //set methods
 
     public void setSeverity(boolean b)
     {
@@ -64,14 +57,11 @@ public class Symptom
         this.name = name;
     }
 
-    public void setNote(String note)
-    {
-        this.note = note;
-    }
-
+    //Makes the toString more human-readable and user-friendly
     public String toString()
     {
-        return "Name: " + getName() + "\nSevere?: " + isSevere() + "\nNote: " + getNote();
+        String capitalName = name.substring(0, 1).toUpperCase() + name.substring(1);
+        return "Name: " + capitalName + "\nSevere?: " + severeYesOrNo();
     }
 
 }
