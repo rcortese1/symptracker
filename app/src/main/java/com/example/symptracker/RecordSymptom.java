@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-public class RecordSymptom extends AppCompatActivity {
+public class RecordSymptom extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SEND_MESSAGE = 3;
     private static final int SMS_PERMISSION_REQ = 1230;
@@ -37,6 +37,9 @@ public class RecordSymptom extends AppCompatActivity {
     private String symptom = "";
     private String phoneNumber = "";
     private boolean severity;
+    private String message  = "";
+    private String phoneName = "";
+    //we define all our variables up top so they're accessible by functions like OnReqPermissionsResult
 
     List<Symptom> symptomList;
 
@@ -119,14 +122,12 @@ public class RecordSymptom extends AppCompatActivity {
                     SharedPreferences pref = getSharedPreferences(resPref, Context.MODE_PRIVATE);
 
                     String keyValuePhone = getResources().getString(R.string.contact_number_key);
-                    phoneNumber = pref.getString(keyValuePhone, "orange");
+                    phoneNumber = pref.getString(keyValuePhone, "orange"); //we use unique names for testing/debugging purposes
                     String keyValueName = getResources().getString(R.string.contact_name_key);
-                    String phoneName = pref.getString(keyValueName, "orange");
+                    phoneName = pref.getString(keyValueName, "orange");
 
-                    Toast.makeText(RecordSymptom.this, "Message sent to " + phoneName, Toast.LENGTH_LONG).show();
-                    String message = "";
                     message += "ALERT:\nSymptom experienced: " + s.getName() + "\nNote attached: " + symptomTextEntry.getText().toString();
-                    sendMessage(message);
+                    sendMessage(message, phoneName);
                 }
 
                 //resets the text in the box
@@ -141,34 +142,52 @@ public class RecordSymptom extends AppCompatActivity {
     If permissions are granted, a message is sent to the phone number supplied
     in emergency contact shared preference and a toast confirms message for the user.
      */
-    private void sendMessage(String message)
-    {
+    private void sendMessage(String message, String phoneName) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
             Log.d("MAD", " SMS Permission is not granted, requesting");
-            ActivityCompat.requestPermissions(this, new
-                    String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_REQ);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_REQ);
+            // the overriden method onReqPermissionsResult is automatically called, which is why we needed to implement it up top
         } else
             {
             Log.d("MAD", "SMS Permission is given");
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        }
+            Toast.makeText(RecordSymptom.this, "Message sent to " + phoneName, Toast.LENGTH_LONG).show();
+            }
     }
 
     //Converts the spinner options to a symptom object
-    private Symptom retrieveSymptom(String symptom)
+    private Symptom retrieveSymptom (String symptom)
     {
         symptom = symptom.toLowerCase();
-        for(Symptom s: symptomList)
-        {
-            if(s.getName().equalsIgnoreCase(symptom))
-            {
+        for (Symptom s : symptomList) {
+            if (s.getName().equalsIgnoreCase(symptom)) {
                 return s;
             }
         }
         return null;
     }
 
+    //Overrides an abstract method to do what we want
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case SMS_PERMISSION_REQ : {
+                // If request is cancelled, the result arrays are empty. We only check for SMS permissions, so only one switch case
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    // SMS permission granted. Message will now send
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+                    Toast.makeText(RecordSymptom.this, "Message sent to " + phoneName, Toast.LENGTH_LONG).show();
+                } else {
+                    // SMS permission denied. Symptom will be recorded in database but not sent
+                    Toast.makeText(this, "Symptom recorded but not sent to emergency contact", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
 }
+
